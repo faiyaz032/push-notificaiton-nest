@@ -18,7 +18,7 @@ export class NotificationProcessor extends WorkerHost {
 
     try {
       // Call the main send notification service function
-      await this.notificationService.sendNotification(notificationData);
+      await this.notificationService.sendPushNotification(notificationData);
     } catch (error) {
       this.logger.error(
         `Failed to send notification to deviceToken: ${notificationData.deviceToken}`,

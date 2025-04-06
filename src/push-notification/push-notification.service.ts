@@ -6,6 +6,7 @@ import { UserService } from 'src/user/user.service';
 import { SendNotificationDto } from './dtos/send-notification.dto';
 import { ConfigService } from '@nestjs/config';
 import { NotificationJobData } from 'src/common/types/NotificationJobData.type';
+import { SendScheduleNotificationDto } from './dtos/send-scheduled-notification.dto';
 
 @Injectable()
 export class PushNotificationService {
@@ -22,7 +23,9 @@ export class PushNotificationService {
     this.logger.log('All notifications have been enqueued.');
   }
 
-  async enqueueScheduleNotification(notificationData: SendNotificationDto) {
+  async enqueueScheduleNotification(
+    notificationData: SendScheduleNotificationDto,
+  ) {
     const { scheduledAt } = notificationData;
 
     const scheduledDate = new Date(scheduledAt!);
@@ -40,7 +43,7 @@ export class PushNotificationService {
   }
 
   private async processInBatches(
-    notificationData: SendNotificationDto,
+    notificationData: SendNotificationDto | SendScheduleNotificationDto,
     jobPrefix: string,
     delay?: number, // optional now
   ) {
@@ -89,7 +92,7 @@ export class PushNotificationService {
   }
 
   // Simulate actual push logic
-  async sendNotification(notificationData: NotificationJobData) {
+  async sendPushNotification(notificationData: NotificationJobData) {
     const { deviceToken, title, message } = notificationData;
     this.logger.log(
       `Sending notification to ${deviceToken}: ${title} - ${message}`,

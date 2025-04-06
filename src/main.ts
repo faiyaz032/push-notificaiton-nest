@@ -1,13 +1,21 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-import {
-  BadRequestException,
-  UnprocessableEntityException,
-  ValidationPipe,
-} from '@nestjs/common';
+import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.setGlobalPrefix('api');
+
+  const config = new DocumentBuilder()
+    .setTitle('Push Notification API')
+    .setDescription('API for sending and scheduling push notifications')
+    .setVersion('1.0')
+    .addTag('push-notifications')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
 
   app.useGlobalPipes(
     new ValidationPipe({
