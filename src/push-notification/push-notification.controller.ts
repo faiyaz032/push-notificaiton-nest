@@ -11,13 +11,21 @@ export class PushNotificationController {
 
   @Post('send-now')
   async sendNow(@Body() notificationDto: SendNotificationDto) {
-    return this.pushNotificationService.sendNotification(notificationDto);
+    await this.pushNotificationService.enqueueNotification(notificationDto);
+    return {
+      success: true,
+      message: 'Notifications are being sent',
+    };
   }
 
   @Post('schedule')
   async schedule(@Body() scheduleNotificationDto: SendScheduleNotificationDto) {
-    return this.pushNotificationService.sendScheduleNotification(
+    await this.pushNotificationService.enqueueScheduleNotification(
       scheduleNotificationDto,
     );
+    return {
+      success: true,
+      message: 'Scheduled notifications are being sent',
+    };
   }
 }
