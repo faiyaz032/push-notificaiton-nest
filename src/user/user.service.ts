@@ -10,10 +10,15 @@ export class UserService implements OnModuleInit {
   constructor(private readonly configService: ConfigService) {}
 
   async onModuleInit() {
-    const userGenerationCount = this.configService.get<number>(
-      'mockUserCount',
-    ) as number;
+    const userGenerationCount = this.configService.get<number>('mockUserCount') as number;
+
+    if (!userGenerationCount) {
+      this.logger.error('No mock user count specified in configuration file. Skipping user generation.');
+      return;
+    }
+
     this.generateMockUsers(userGenerationCount);
+
     this.logger.log(`Mock users generated: ${this.users.length}`);
   }
 
@@ -31,14 +36,14 @@ export class UserService implements OnModuleInit {
     this.logger.debug('Finished generating mock users.');
   }
 
-  findAll(page: number = 1, limit: number = 10): User[] {
+  async findAll(page: number = 1, limit: number = 10): Promise<User[]> {
     const offset = (page - 1) * limit;
     const paginatedUsers = this.users.slice(offset, offset + limit);
 
     return paginatedUsers;
   }
 
-  findOne(id: number): User | undefined {
+  async findOne(id: number): Promise<User | undefined> {
     const user = this.users.find((user) => user.id === id);
     if (user) {
       this.logger.log(`User found: ${user.name}`);

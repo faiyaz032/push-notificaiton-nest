@@ -33,6 +33,8 @@ This single command will:
 
 The Swagger API documentation will be available at: [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
 
+_You can test this application for **40k** users just by changing the `mockUserCount` property in `src/config/index.ts` file._
+
 ## API Testing Guidelines
 
 ### Using Swagger UI

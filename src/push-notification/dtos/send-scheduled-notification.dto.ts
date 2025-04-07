@@ -26,8 +26,7 @@ export class SendScheduleNotificationDto {
   @IsISO8601(
     {},
     {
-      message:
-        'Scheduled time must be in ISO 8601 format (e.g., "2025-04-05T17:00:00.000Z").',
+      message: 'Scheduled time must be in ISO 8601 format (e.g., "2025-04-05T17:00:00.000Z").',
     },
   )
   scheduledAt: Date;

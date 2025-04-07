@@ -7,9 +7,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('push-notifications')
 @Controller('push-notification')
 export class PushNotificationController {
-  constructor(
-    private readonly pushNotificationService: PushNotificationService,
-  ) {}
+  constructor(private readonly pushNotificationService: PushNotificationService) {}
 
   @Post('send-now')
   @ApiOperation({ summary: 'Send a push notification immediately' })
@@ -51,9 +49,7 @@ export class PushNotificationController {
   })
   @ApiResponse({ status: 422, description: 'Validation error' })
   async schedule(@Body() scheduleNotificationDto: SendScheduleNotificationDto) {
-    await this.pushNotificationService.enqueueScheduleNotification(
-      scheduleNotificationDto,
-    );
+    await this.pushNotificationService.enqueueScheduleNotification(scheduleNotificationDto);
     return {
       success: true,
       message: 'Scheduled notifications are being sent',
